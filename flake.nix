@@ -41,6 +41,8 @@
               pkgs.gcc
               cudaPkgs.cudatoolkit
               pkgs.python313
+              run-model-cpu
+              run-model-cuda
             ];
 
             shellHook = ''
