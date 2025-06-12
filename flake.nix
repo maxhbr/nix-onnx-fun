@@ -10,17 +10,17 @@
         f (import nixpkgs { 
           inherit system; 
           config.allowUnfree = true;
-          }));
+        }));
     in
     {
       devShells = forAll (pkgs:
         let
-          cudaPkgs  = pkgs.cudaPackages_12_4;     # change to _12_3, _11_8 … if needed
+          cudaPkgs  = pkgs.cudaPackages_12_4;
           cudaLibs  = [
             "${cudaPkgs.cudatoolkit}/lib"
-            "${cudaPkgs.cudnn}/lib"
-            "${cudaPkgs.libcublas}/lib"
-            "${cudaPkgs.cuda_cudart}/lib"
+            "${cudaPkgs.cudnn_9_8.lib}/lib"
+            "${cudaPkgs.libcublas.lib}/lib"
+            "${cudaPkgs.cuda_cudart.lib}/lib"
           ];
           gccLibDir = "${pkgs.gcc.cc.lib}/lib";
           fetch-model = pkgs.writeShellScriptBin "fetch-model" ''
@@ -33,11 +33,8 @@
         {
           default = pkgs.mkShell {
             packages = [
-              pkgs.gcc                         # compiler + runtime libs
+              pkgs.gcc
               cudaPkgs.cudatoolkit
-              cudaPkgs.cudnn_9_8.lib
-              cudaPkgs.libcublas.lib
-              cudaPkgs.cuda_cudart.lib
               pkgs.python313
               pkgs.python313Packages.venvShellHook
               pkgs.git
