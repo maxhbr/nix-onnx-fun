@@ -35,9 +35,9 @@
             packages = [
               pkgs.gcc                         # compiler + runtime libs
               cudaPkgs.cudatoolkit
-              cudaPkgs.cudnn_9_8
-              cudaPkgs.libcublas
-              cudaPkgs.cuda_cudart
+              cudaPkgs.cudnn_9_8.lib
+              cudaPkgs.libcublas.lib
+              cudaPkgs.cuda_cudart.lib
               pkgs.python313
               pkgs.python313Packages.venvShellHook
               pkgs.git
