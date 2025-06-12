@@ -26,15 +26,18 @@
           default = pkgs.mkShell {
             packages = [
               pkgs.gcc                         # compiler + runtime libs
-              pkgs.python311
-              pkgs.python311Packages.venvShellHook
+              pkgs.python313
+              pkgs.python313Packages.venvShellHook
               pkgs.git
             ];
 
             shellHook = ''
               export LD_LIBRARY_PATH=${gccLibDir}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-              echo "• libstdc++.so.6 added to LD_LIBRARY_PATH"
-              echo "• A Python venv (.venv) will be auto-created on first entry"
+              if [ ! -d .venv ]; then
+                python3 -m venv .venv
+              fi
+              source .venv/bin/activate
+              pip install --upgrade pip
             '';
           };
         });
