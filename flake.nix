@@ -26,6 +26,14 @@
             ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download microsoft/phi-4-onnx --include cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4/'*' --local-dir phi4
             ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download microsoft/phi-4-onnx --include gpu/* --local-dir phi4
           '';
+          run-model-cpu = pkgs.writeShellScriptBin "run-model-cpu" ''
+            set -x
+            python phi3-qa.py -m phi4/cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4 -e cpu
+          '';
+          run-model-cuda = pkgs.writeShellScriptBin "run-model-cuda" ''
+            set -x
+            python phi3-qa.py -m phi4/gpu/gpu-int4-rtn-block-32 -e cuda
+          '';
         in
         {
           default = pkgs.mkShell {
