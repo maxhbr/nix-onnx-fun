@@ -35,7 +35,7 @@
             packages = [
               pkgs.gcc                         # compiler + runtime libs
               cudaPkgs.cudatoolkit
-              cudaPkgs.cudnn
+              cudaPkgs.cudnn_9_8
               cudaPkgs.libcublas
               cudaPkgs.cuda_cudart
               pkgs.python313
