@@ -23,10 +23,8 @@
           ];
           gccLib = "${pkgs.gcc.cc.lib}/lib";
           fetch-model = pkgs.writeShellScriptBin "fetch-model" ''
-            ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download \
-              microsoft/Phi-3-mini-4k-instruct-onnx \
-              --include cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4/'*' \
-              --local-dir phi
+            ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download microsoft/phi-4-onnx --include cpu_and_mobile/cpu-int4-rtn-block-32-acc-level-4/'*' --local-dir phi4
+            ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download microsoft/phi-4-onnx --include gpu/* --local-dir phi4
           '';
         in
         {
@@ -42,7 +40,7 @@
               if [ ! -d .venv ]; then
                 python3 -m venv .venv
               fi
-              if [ ! -d phi ]; then
+              if [ ! -d phi4 ]; then
                 ${fetch-model}/bin/fetch-model
               fi
               source .venv/bin/activate
