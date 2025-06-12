@@ -28,6 +28,7 @@
             packages = [
               pkgs.gcc
               pkgs.python313
+              run-model-cpu
             ];
 
             shellHook = ''
