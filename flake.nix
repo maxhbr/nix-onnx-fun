@@ -1,6 +1,5 @@
 # flake.nix
 {
-  description = "Dev shell for running Phi-3 Mini ONNX on NixOS";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
   outputs = { self, nixpkgs }:
@@ -22,7 +21,7 @@
             "${cudaPkgs.libcublas.lib}/lib"
             "${cudaPkgs.cuda_cudart.lib}/lib"
           ];
-          gccLibDir = "${pkgs.gcc.cc.lib}/lib";
+          gccLib = "${pkgs.gcc.cc.lib}/lib";
           fetch-model = pkgs.writeShellScriptBin "fetch-model" ''
             ${pkgs.python313Packages.huggingface-hub}/bin/huggingface-cli download \
               microsoft/Phi-3-mini-4k-instruct-onnx \
@@ -36,12 +35,10 @@
               pkgs.gcc
               cudaPkgs.cudatoolkit
               pkgs.python313
-              pkgs.python313Packages.venvShellHook
-              pkgs.git
             ];
 
             shellHook = ''
-              export LD_LIBRARY_PATH=${pkgs.lib.concatStringsSep ":" (cudaLibs ++ [ gccLibDir ])}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+              export LD_LIBRARY_PATH=${pkgs.lib.concatStringsSep ":" (cudaLibs ++ [ gccLib ])}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
               if [ ! -d .venv ]; then
                 python3 -m venv .venv
               fi
@@ -50,6 +47,7 @@
               fi
               source .venv/bin/activate
               pip install --upgrade pip
+              pip install --upgrade onnxruntime-genai-cuda 
             '';
           };
         });
